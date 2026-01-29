@@ -5,7 +5,7 @@ def home(request):
     # --- CONFIGURATION ---
     # Once you deploy Streamlit, paste the URL here!
     # Example: "https://surendra-ai-lab.streamlit.app"
-    STREAMLIT_URL = "https://share.streamlit.io" 
+    STREAMLIT_URL = "https://your-new-app-name.streamlit.app" 
 
     profile = {
         "name": "KADA SATYA SURENDRA",
