@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from huggingface_hub import InferenceClient
+
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
