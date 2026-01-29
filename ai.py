@@ -71,9 +71,10 @@ def get_real_response(prompt, context):
     ]
     
     # Using Mistral-7B-Instruct for high quality free inference
+# Using Zephyr-7B-Beta (Reliable Free Tier Model)
     try:
         response = client.chat_completion(
-            model="HuggingFaceH4/zephyr-7b-beta",  # <--- CHANGED THIS LINE
+            model="HuggingFaceH4/zephyr-7b-beta",  # <--- NEW MODEL
             messages=messages,
             max_tokens=500,
             temperature=0.3
