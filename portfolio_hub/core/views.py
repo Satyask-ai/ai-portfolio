@@ -4,8 +4,8 @@ from django.shortcuts import render
 def home(request):
     # --- CONFIGURATION ---
     # Once you deploy Streamlit, paste the URL here!
-    # Example: "https://surendra-ai-lab.streamlit.app"
-    STREAMLIT_URL = "" 
+    # Example: "https://surendra-ai-agent.streamlit.app"
+    STREAMLIT_URL = "https://satya-ai-agent.streamlit.app/" 
 
     profile = {
         "name": "KADA SATYA SURENDRA",

@@ -1,0 +1,2 @@
+uv run manage.py runserver          
+uv run streamlit ai_agent.py
