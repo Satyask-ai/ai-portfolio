@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.name }} - Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .header-section { background: #2c3e50; color: white; padding: 40px 0; }
+        .card { margin-bottom: 20px; border: none; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .streamlit-frame { width: 100%; height: 600px; border: none; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section text-center">
+        <h1>{{ profile.name }}</h1>
+        <h3>{{ profile.title }}</h3>
+        <p>{{ profile.location }} | {{ profile.email }} | {{ profile.phone }}</p>
+    </div>
+
+    <div class="container mt-5">
+        
+        <div class="card p-4">
+            <h4>Senior AI Engineer</h4>
+            <p class="lead">{{ profile.summary }}</p>
+        </div>
+
+        <div class="card p-4 bg-white">
+            <h4 class="text-primary">🤖 Live AI Agent Lab</h4>
+            <p>Interact with my deterministic "Watcher Agent" simulation below:</p>
+            <div class="alert alert-info">
+                <strong>Deployment Note:</strong> Once you deploy your Streamlit script, paste the URL here.
+                For now, run: <code>uv run streamlit run ../ai_lab.py</code> in a separate terminal.
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h4 class="mt-4">Professional Experience</h4>
+                {% for job in experience %}
+                <div class="card p-3">
+                    <h5>{{ job.role }} <span class="text-muted">@ {{ job.company }}</span></h5>
+                    <small class="text-primary">{{ job.date }}</small>
+                    <ul class="mt-2">
+                        {% for point in job.details %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-4">
+                <h4 class="mt-4">Technical Skills</h4>
+                <div class="card p-3">
+                    <ul class="list-group list-group-flush">
+                        {% for skill in skills %}
+                        <li class="list-group-item">{{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
