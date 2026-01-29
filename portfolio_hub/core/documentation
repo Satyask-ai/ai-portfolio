@@ -1,2 +1,4 @@
-uv run manage.py runserver          
+uv run manage.py runserver  
 uv run streamlit ai_agent.py
+https://satya-portfolio-13mp.onrender.com/
+https://satya-ai-agent.streamlit.app/
