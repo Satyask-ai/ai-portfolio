@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-
+from huggingface_hub import InferenceClient  # <--- THIS WAS MISSING
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -12,16 +12,16 @@ st.set_page_config(
 # --- SIDEBAR INFO ---
 with st.sidebar:
     st.header("⚙️ System Architecture")
-    st.info("This demo uses a **Hybrid Architecture**: Real LLM Generation (Mistral-7B) + Simulated RAG Retrieval.")
+    st.info("This demo uses a **Hybrid Architecture**: Real LLM Generation (Zephyr-7B) + Simulated RAG Retrieval.")
     st.markdown("""
     **Active Nodes:**
     - 🧠 **Orchestrator:** Routes queries.
     - 🔍 **Researcher:** Simulates context retrieval.
-    - 🤖 **Generator:** Mistral-7B (Hugging Face).
+    - 🤖 **Generator:** Zephyr-7B (Hugging Face).
     - 🛡️ **Watcher Agent:** Validates output.
     """)
     st.divider()
-    st.success("Model: **Mistral-7B-Instruct-v0.3**")
+    st.success("Model: **Zephyr-7B-Beta**")
     st.warning("Mode: **Free Tier Inference**")
 
 # --- MAIN UI ---
@@ -70,11 +70,10 @@ def get_real_response(prompt, context):
         {"role": "user", "content": prompt}
     ]
     
-    # Using Mistral-7B-Instruct for high quality free inference
-# Using Zephyr-7B-Beta (Reliable Free Tier Model)
+    # Using Zephyr-7B-Beta (Reliable Free Tier Model)
     try:
         response = client.chat_completion(
-            model="HuggingFaceH4/zephyr-7b-beta",  # <--- NEW MODEL
+            model="HuggingFaceH4/zephyr-7b-beta",
             messages=messages,
             max_tokens=500,
             temperature=0.3
@@ -102,8 +101,6 @@ if prompt:
             st.write("↳ Intent detected: **Clinical Query**")
             
             # --- PHASE 2: SIMULATED RETRIEVAL (RAG) ---
-            # To show the "Orchestration" value, we inject fake retrieved documents
-            # This proves your Agent can handle context, even without a live vector DB right now.
             status.update(label="🔍 Researcher: Retrieving context...", state="running")
             time.sleep(1)
             
@@ -119,7 +116,7 @@ if prompt:
                 st.write("↳ Retrieved chunk: `General_Knowledge_Base`")
 
             # --- PHASE 3: REAL GENERATION (Hugging Face) ---
-            status.update(label="🤖 LLM: Generating response (Mistral-7B)...", state="running")
+            status.update(label="🤖 LLM: Generating response (Zephyr-7B)...", state="running")
             full_response = get_real_response(prompt, simulated_context)
             
             # --- PHASE 4: WATCHER AGENT ---
