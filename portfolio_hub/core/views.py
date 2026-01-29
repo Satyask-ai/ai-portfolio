@@ -2,35 +2,58 @@
 from django.shortcuts import render
 
 def home(request):
-    # Your Resume Data (Hardcoded for simplicity)
+    # --- CONFIGURATION ---
+    # Once you deploy Streamlit, paste the URL here!
+    # Example: "https://surendra-ai-lab.streamlit.app"
+    STREAMLIT_URL = "https://share.streamlit.io" 
+
     profile = {
         "name": "KADA SATYA SURENDRA",
-        "title": "Lead AI Orchestration Engineer",
+        "title": "Senior AI Engineer",
         "location": "USA",
         "email": "skada544@gmail.com",
         "phone": "+1 (734) 743-1032",
-        "summary": "Senior AI/ML Engineer with 10+ years of experience. Expert in LangGraph, Multi-Agent Orchestration, and HIPAA-compliant AI."
+        "summary": "Senior AI/ML Engineer with 10+ years of experience. Expert in LangGraph, Multi-Agent Orchestration,RAG implementations and HIPAA-compliant AI systems."
+    }
+
+    # Split skills for better UI layout
+    skills = {
+        "ai": [
+            "LangGraph", "Multi-Agent Systems", "Ragas (Eval)", 
+            "Watcher Agents", "LLMOps", "OpenAI GPT-4", "RAG"
+        ],
+        "engineering": [
+            "Python", "FastAPI", "Docker", "CI/CD", 
+            "UV Package Manager", "PostgreSQL", "Azure/AWS"
+        ]
     }
 
     experience = [
         {
-            "role": "Lead AI Orchestration Engineer",
+            "role": "Senior AI Engineer",
             "company": "Epic Systems",
             "date": "Jan 2024 – Present",
             "details": [
-                "Architected a 5-node multi-agent ecosystem using LangGraph, handling 10,000+ queries.",
-                "Designed 'Watcher Agents' to validate actions, achieving 100% HIPAA compliance.",
-                "Reduced clinical hallucination rates by 40% using automated Ragas evaluation pipelines."
+                "Led the strategic roadmap for the C-Suite, successfully pitching and executing the enterprise transition from legacy RAG systems (Phase 4) to autonomous agents (Phase 6)..",
+                "Reduced the time-to-market for new clinical intake systems from 4 weeks to 3 days by standardizing agent configuration templates..",
+                "Mentored a team of 3 junior AI developers, upskilling them in graph-based orchestration and LLMOps best practices.",
+                "Architected a 5-node multi-agent ecosystem using LangGraph, successfully transitioning the client from disjointed, single-agent chatbots to a cohesive, enterprise-grade AI workforce..",
+                "Scaled the multi-agent system to successfully handle 10,000+ concurrent patient intake queries with sub-2-second latency..",
+                "Engineered the central \"Orchestrator Agent\" with dynamic routing capabilities, improving task delegation accuracy to specialized sub-agents (Researcher, Reviewer, Auditor) by 85%.",
+                "Eliminated infinite agent loops by 60% through the design of strict cyclical graph constraints and deterministic edge-condition routing within LangGraph.",
+                "Designed a seamless Human-in-the-Loop (HITL) interface utilizing LangGraph's native checkpointing, allowing medical professionals to pause, review, and approve critical AI decisions"
             ]
         },
         {
-            "role": "Senior AI Engineer",
+            "role": "AI Engineer",
             "company": "Morgan Stanley",
             "date": "July 2022 – Jan 2024",
             "details": [
-                "Saved $800k+ annually by replacing keyword search with semantic AI engines.",
-                "Built an Autonomous Financial Agent using ReAct framework for complex audit inquiries.",
-                "Scaled RAG pipeline to process millions of financial PDFs with 99% accuracy."
+                "Saved an estimated $800,000+ annually in operational costs by replacing legacy, labor-intensive keyword searches with a highly accurate semantic AI engine.",
+                "Pioneered the early adoption of LangChain and ReAct frameworks within the enterprise, establishing the engineering blueprint for future AI projects.",
+                "Accelerated the client intake process by 300%, automating the initial parsing and verification of complex financial profiles.",
+                "Architected an enterprise-grade RAG pipeline using early-stage LangChain to process and index millions of dense financial PDFs with 99% data-extraction accuracy.",
+                "Built a robust microservices architecture using FastAPI to securely expose LLM agents to internal financial dashboards",
             ]
         },
         {
@@ -38,23 +61,21 @@ def home(request):
             "company": "Cigna Healthcare",
             "date": "Sep 2020 – June 2022",
             "details": [
-                "Fine-tuned BERT models for FDA 21 CFR Part 820 compliance.",
-                "Slashed cloud costs by $150k using Parameter-Efficient Fine-Tuning (PEFT)."
+                "Slashed manual Subject Matter Expert (SME) review time by 50% by deploying an AI-driven documentation review system for strict medical device audits",
+                "Mitigated regulatory compliance risks by achieving a 92% accuracy rate in automatically identifying non-compliances in complex Computer System Validation (GAMP 5) documents",
+                "Accelerated the FDA approval process by automating the drafting and cross-referencing of dense medical device quality engineering documentation",
+                "Saved over $150,000 in cloud compute costs by pioneering the early adoption of Parameter-Efficient Fine-Tuning (PEFT) instead of full-model retraining.",
+                "Streamlined global regulatory audits by unifying siloed documentation across FDA 21 CFR Part 820, ISO 13485, and ISO 14971 standards into a single, searchable AI engine.",
+
+
             ]
         }
-    ]
-
-    skills = [
-        "LangGraph & Multi-Agent Systems",
-        "OpenAI (GPT-4) & LLMOps",
-        "RAG & Vector DBs (Pinecone)",
-        "HIPAA & FDA Compliance",
-        "Python, Docker, & CI/CD"
     ]
 
     context = {
         'profile': profile,
         'experience': experience,
-        'skills': skills
+        'skills': skills,
+        'streamlit_url': STREAMLIT_URL, # Passes the link to the template
     }
     return render(request, 'index.html', context)
