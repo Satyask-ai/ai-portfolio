@@ -1,14 +1,8 @@
 import streamlit as st
-import os
-# --- EMERGENCY INSTALL ---
-# This forces the server to install the missing library immediately
-try:
-    from huggingface_hub import InferenceClient
-except ImportError:
-    os.system("pip install huggingface_hub")
-    from huggingface_hub import InferenceClient
-
+import subprocess
+import sys
 import time
+from huggingface_hub import InferenceClient
 
 
 # --- PAGE CONFIGURATION ---
