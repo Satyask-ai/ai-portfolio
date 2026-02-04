@@ -69,7 +69,31 @@ def home(request):
 
 
             ]
+        },
+              {
+            "role": "Data Scientist",
+            "company": "Fiserv",
+            "date": "Jan 2018 – Aug 2020",
+            "details": [
+                "Mitigated a 15% YoY increase in credit card fraud, saving the bank millions of dollars in potential annual chargeback losses",
+                "Slashed manual transaction review time by 40% for the risk management team by filtering out low-probability fraud events.",
+                "Implemented automated model drift monitoring to detect when fraudsters changed tactics, triggering immediate retraining of the XGBoost models.",
+                "Automated real-time fraud detection for 5,000+ transactions per second, eliminating critical bottlenecks in the bank's global payment processing pipeline.",
+
+
+            ]
+        },
+        {
+            "role": "Data Analyst",
+            "company": "Canbank Computer Servies Ltd",
+            "date": "July 2016 – Nov 2017",
+            "details": [
+                "Accelerated the detection of adverse clinical events by 3 weeks by replacing legacy static reports with real-time, dynamic Matplotlib and Seaborn dashboards.",
+                "Cleaned, aggregated, and standardized unstructured clinical trial data for 10,000+ patients, successfully unifying disparate records from over 15 distinct hospital networks.",
+                "Collaborated with cross-functional teams to identify key performance indicators (KPIs) and develop data-driven strategies that improved overall business performance.",
+            ]
         }
+
     ]
 
     context = {

@@ -1,9 +1,6 @@
 import streamlit as st
-import subprocess
-import sys
 import time
 from huggingface_hub import InferenceClient
-
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -15,7 +12,7 @@ st.set_page_config(
 # --- SIDEBAR INFO ---
 with st.sidebar:
     st.header("⚙️ System Architecture")
-    st.info("This demo uses a **Hybrid Architecture**: Real LLM Generation (Zephyr-7B) + Simulated RAG Retrieval.")
+    st.info("Hybrid Architecture: Real LLM (Zephyr-7B) + Simulated RAG.")
     st.markdown("""
     **Active Nodes:**
     - 🧠 **Orchestrator:** Routes queries.
@@ -30,30 +27,32 @@ with st.sidebar:
 # --- MAIN UI ---
 st.title("🛡️ Enterprise AI Orchestration Lab")
 st.markdown("""
-> **System Notification:** "Watcher Agent" is active. All outputs are being monitored for **Hallucinations** and **PHI (Protected Health Information)** leakage.
+> **System Notification:** "Watcher Agent" is active. Monitoring for **Hallucinations** and **PHI**.
 """)
 
-# Chat Interface
+# --- CACHED LLM CLIENT SETUP ---
+@st.cache_resource
+def get_client():
+    # Check if secret exists
+    if "HF_TOKEN" not in st.secrets:
+        st.error("Missing HF_TOKEN. Please add it to Streamlit Secrets.")
+        st.stop()
+    return InferenceClient(token=st.secrets["HF_TOKEN"])
+
+# Initialize the client
+client = get_client()
+
+# --- CHAT LOGIC ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display chat history
+# Display history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# --- LLM SETUP ---
-# We use the free Hugging Face Inference API
-if "HF_TOKEN" in st.secrets:
-    client = InferenceClient(token=st.secrets["HF_TOKEN"])
-else:
-    st.error("Missing Hugging Face Token. Please add it to .streamlit/secrets.toml")
-    st.stop()
-
 def get_real_response(prompt, context):
-    """
-    Sends the user prompt + simulated RAG context to the LLM.
-    """
+    """Sends prompt + context to LLM with error handling."""
     system_prompt = f"""
     You are a strictly compliant AI Clinical Assistant. 
     Use ONLY the following CONTEXT to answer the user's question. 
@@ -63,7 +62,7 @@ def get_real_response(prompt, context):
     {context}
     
     RULES:
-    1. Do not invent information (Hallucination Check).
+    1. Do not invent information.
     2. Maintain a professional tone.
     3. Do not output PHI (Protected Health Information).
     """
@@ -73,7 +72,6 @@ def get_real_response(prompt, context):
         {"role": "user", "content": prompt}
     ]
     
-    # Using Zephyr-7B-Beta (Reliable Free Tier Model)
     try:
         response = client.chat_completion(
             model="HuggingFaceH4/zephyr-7b-beta",
@@ -83,9 +81,9 @@ def get_real_response(prompt, context):
         )
         return response.choices[0].message.content
     except Exception as e:
-        return f"Error connecting to LLM: {str(e)}"
+        return f"⚠️ **LLM Error:** {str(e)}\n\n*Tip: The free model might be loading. Try again in 30 seconds.*"
 
-# --- THE AGENT LOGIC ---
+# --- THE AGENT LOOP ---
 prompt = st.chat_input("Ask a clinical or financial question...")
 
 if prompt:
@@ -98,39 +96,39 @@ if prompt:
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         
-        # --- PHASE 1: ORCHESTRATION ---
+        # --- ORCHESTRATION & RAG SIMULATION ---
         with st.status("🧠 Orchestrator: Analyzing intent...", expanded=True) as status:
             time.sleep(0.5)
             st.write("↳ Intent detected: **Clinical Query**")
             
-            # --- PHASE 2: SIMULATED RETRIEVAL (RAG) ---
             status.update(label="🔍 Researcher: Retrieving context...", state="running")
-            time.sleep(1)
+            time.sleep(0.8)
             
-            simulated_context = ""
+            # Simulated RAG Logic
             if "diabetes" in prompt.lower():
                 simulated_context = "SOURCE: Clinical_Guidelines_2025.pdf | CONTENT: Type 2 diabetes management requires regular HbA1c monitoring every 3 months. Metformin is the first-line therapy."
-                st.write("↳ Retrieved chunk: `Clinical_Guidelines_2025.pdf` (Score: 0.92)")
+                st.write("↳ Retrieved: `Clinical_Guidelines_2025.pdf` (Score: 0.92)")
             elif "audit" in prompt.lower():
-                simulated_context = "SOURCE: FDA_21_CFR_Part_11.pdf | CONTENT: Electronic records must be maintained with secure, time-stamped audit trails. Digital signatures are legally binding."
-                st.write("↳ Retrieved chunk: `FDA_21_CFR_Part_11.pdf` (Score: 0.89)")
+                simulated_context = "SOURCE: FDA_21_CFR_Part_11.pdf | CONTENT: Electronic records must be maintained with secure, time-stamped audit trails."
+                st.write("↳ Retrieved: `FDA_21_CFR_Part_11.pdf` (Score: 0.89)")
             else:
                 simulated_context = "SOURCE: General_Policy.pdf | CONTENT: All clinical inquiries must be cross-referenced with ISO 13485 standards."
-                st.write("↳ Retrieved chunk: `General_Knowledge_Base`")
+                st.write("↳ Retrieved: `General_Knowledge_Base`")
 
-            # --- PHASE 3: REAL GENERATION (Hugging Face) ---
-            status.update(label="🤖 LLM: Generating response (Zephyr-7B)...", state="running")
+            # Real Generation
+            status.update(label="🤖 LLM: Generating response...", state="running")
             full_response = get_real_response(prompt, simulated_context)
             
-            # --- PHASE 4: WATCHER AGENT ---
+            # Watcher Agent Simulation
             status.update(label="🛡️ Watcher Agent: Validating safety...", state="running")
             time.sleep(0.5)
             st.write("↳ **Check 1:** PHI Scanning... [PASSED]")
             st.write("↳ **Check 2:** Hallucination Check... [VERIFIED]")
             
-            status.update(label="✅ Response Verified & Delivered", state="complete", expanded=False)
+            status.update(label="✅ Response Verified", state="complete", expanded=False)
 
-        # Stream the REAL response
+        # Output Result
         message_placeholder.markdown(full_response)
     
+    # Save Assistant Response
     st.session_state.messages.append({"role": "assistant", "content": full_response})
