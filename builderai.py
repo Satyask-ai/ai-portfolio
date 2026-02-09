@@ -11,14 +11,14 @@ st.set_page_config(
 
 # --- SIDEBAR INFO ---
 with st.sidebar:
-    st.header("⚙️ System Architecture")
+    st.header("System Architecture")
     st.info("Hybrid Architecture: Real LLM (Zephyr-7B) + Simulated RAG.")
     st.markdown("""
     **Active Nodes:**
-    - 🧠 **Orchestrator:** Routes queries.
-    - 🔍 **Researcher:** Simulates context retrieval.
-    - 🤖 **Generator:** Zephyr-7B (Hugging Face).
-    - 🛡️ **Watcher Agent:** Validates output.
+    - **Orchestrator:** Routes queries.
+    - **Researcher:** Simulates context retrieval.
+    - **Generator:** Zephyr-7B (Hugging Face).
+    - **Watcher Agent:** Validates output.
     """)
     st.divider()
     st.success("Model: **Zephyr-7B-Beta**")
