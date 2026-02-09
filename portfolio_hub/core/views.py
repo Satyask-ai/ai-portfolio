@@ -79,6 +79,7 @@ def home(request):
                 "Slashed manual transaction review time by 40% for the risk management team by filtering out low-probability fraud events.",
                 "Implemented automated model drift monitoring to detect when fraudsters changed tactics, triggering immediate retraining of the XGBoost models.",
                 "Automated real-time fraud detection for 5,000+ transactions per second, eliminating critical bottlenecks in the bank's global payment processing pipeline.",
+                "Reduced false-positive account freezing by 22%, significantly improving the user experience and retention of high-value banking customers."
 
 
             ]
@@ -91,6 +92,9 @@ def home(request):
                 "Accelerated the detection of adverse clinical events by 3 weeks by replacing legacy static reports with real-time, dynamic Matplotlib and Seaborn dashboards.",
                 "Cleaned, aggregated, and standardized unstructured clinical trial data for 10,000+ patients, successfully unifying disparate records from over 15 distinct hospital networks.",
                 "Collaborated with cross-functional teams to identify key performance indicators (KPIs) and develop data-driven strategies that improved overall business performance.",
+                "Improved the statistical validity of final trial results by 20% by implementing rigorous outlier detection and data-cleaning workflows that eliminated human entry errors.",
+                "Ensured 100% HIPAA compliance and zero regulatory infractions by engineering automated, secure pipelines to strictly strip all Protected Health Information (PHI).",
+
             ]
         }
 
